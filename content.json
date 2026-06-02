@@ -1,0 +1,211 @@
+{
+  "homepage": [
+    {
+      "id": "epidemic-sound-rebrand",
+      "title": "Epidemic Sound — Rebrand",
+      "asset": "assets/epidemicsound-redesign.png",
+      "type": "image"
+    },
+    {
+      "id": "aira",
+      "title": "Aira — Visual Design",
+      "asset": "assets/aira.png",
+      "type": "image"
+    },
+    {
+      "id": "viaplay-rebrand",
+      "title": "Viaplay — Rebrand",
+      "asset": "assets/viaplay-redesign.png",
+      "type": "image"
+    },
+    {
+      "id": "epidemic-sound-homepage",
+      "title": "Epidemic Sound — Homepage",
+      "asset": "assets/epidemic-sound-homepage.png",
+      "type": "image"
+    },
+    {
+      "id": "viaplay-android-tv",
+      "title": "Viaplay — Android TV",
+      "asset": "assets/androidtv.png",
+      "type": "image"
+    },
+    {
+      "id": "viaplay-moments",
+      "title": "Viaplay — Moments",
+      "asset": "assets/viaplay-moments.png",
+      "type": "image"
+    },
+    {
+      "id": "viaplay-trailers",
+      "title": "Viaplay — Trailers",
+      "asset": "assets/viaplay-trailers.mp4",
+      "type": "video"
+    },
+    {
+      "id": "other-work",
+      "title": "Other Work",
+      "asset": "assets/other-work.png",
+      "type": "image"
+    }
+  ],
+  "cases": {
+    "epidemic-sound-rebrand": {
+      "title": "Epidemic Sound — Rebrand",
+      "role": "Lead Design",
+      "description": [
+        "As a part of a strategic shift from a music library for content creators to a soundtracking tool for professionals — a rebrand to manifest that step was necessary. The competitive landscape was a sea of sameness so an opportunity to stand out was possible.",
+        "A cross collaboration between brand, product & marketing resulted in a complete new expression for all touch points."
+      ],
+      "rows": [
+        [
+          "assets/Screenshot+2024-01-29+at+14.02.03.png"
+        ],
+        [
+          "assets/Screenshot+2024-01-29+at+14.07.28.png"
+        ],
+        [
+          "assets/Pattern_Rhythmic_v2.gif"
+        ],
+        [
+          "assets/Music.png"
+        ],
+        [
+          "assets/artist.png"
+        ],
+        [
+          "assets/Iphone14Pro_Mockup01_MicroVolume.png"
+        ],
+        [
+          "assets/enterprise.png"
+        ],
+        [
+          "assets/epidemic-brand-recording.mov"
+        ]
+      ],
+      "prev": null,
+      "next": "aira"
+    },
+    "aira": {
+      "title": "Aira — Visual Design",
+      "role": "Lead Design",
+      "description": [
+        "Visual design and design system for Aira."
+      ],
+      "rows": [
+        [
+          "assets/aira.png"
+        ]
+      ],
+      "prev": "epidemic-sound-rebrand",
+      "next": "viaplay-rebrand"
+    },
+    "viaplay-rebrand": {
+      "title": "Viaplay — Rebrand",
+      "role": "Lead Design",
+      "description": [
+        "Leading the design rebrand for Viaplay across all platforms."
+      ],
+      "rows": [
+        [
+          "assets/viaplay-redesign.png"
+        ]
+      ],
+      "prev": "aira",
+      "next": "epidemic-sound-homepage"
+    },
+    "epidemic-sound-homepage": {
+      "title": "Epidemic Sound — Homepage",
+      "role": "Lead Product Design",
+      "description": [
+        "Redesign of Epidemic Sound's homepage and public web."
+      ],
+      "rows": [
+        [
+          "assets/epidemic-sound-homepage.png"
+        ]
+      ],
+      "prev": "viaplay-rebrand",
+      "next": "viaplay-android-tv"
+    },
+    "viaplay-android-tv": {
+      "title": "Viaplay — Android TV",
+      "role": "Lead Design",
+      "description": [
+        "Designing the Android TV experience for Viaplay."
+      ],
+      "rows": [
+        [
+          "assets/androidtv.png"
+        ]
+      ],
+      "prev": "epidemic-sound-homepage",
+      "next": "viaplay-moments"
+    },
+    "viaplay-moments": {
+      "title": "Viaplay — Moments",
+      "role": "Lead Design",
+      "description": [
+        "Viaplay Moments feature design."
+      ],
+      "rows": [
+        [
+          "assets/viaplay-moments.png"
+        ]
+      ],
+      "prev": "viaplay-android-tv",
+      "next": "viaplay-trailers"
+    },
+    "viaplay-trailers": {
+      "title": "Viaplay — Trailers",
+      "role": "Lead Design",
+      "description": [
+        "Trailer experience design for Viaplay."
+      ],
+      "rows": [
+        [
+          "assets/viaplay-Screensaver.png"
+        ],
+        [
+          "assets/viaplay-trailers.mp4"
+        ]
+      ],
+      "prev": "viaplay-moments",
+      "next": "other-work"
+    },
+    "other-work": {
+      "title": "Other Work",
+      "role": " ",
+      "description": [
+        "A selection of other brands & projects I have worked with."
+      ],
+      "rows": [
+        {
+          "files": [
+            "assets/other-work.png"
+          ],
+          "caption": "Fotografiska / Web & digital campaigns"
+        },
+        [
+          "assets/70x100.png",
+          "assets/poster-wall.png"
+        ],
+        {
+          "files": [
+            "assets/Farinelli_Musikaliska2.jpg",
+            "assets/bonnier.001.png",
+            "assets/bookbeat.png"
+          ],
+          "captions": [
+            "Musikaliska Concert Hall / Digital & Print Campaign (Guldägg Nominee)",
+            "Bonnier / Digital Identity",
+            "Bonnier / Digital Identity"
+          ],
+          "layout": "masonry"
+        }
+      ],
+      "prev": "viaplay-trailers",
+      "next": null
+    }
+  }
+}

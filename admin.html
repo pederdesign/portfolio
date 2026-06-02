@@ -1,0 +1,657 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin — Peder Anzén</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&family=Inter+Tight:wght@400;500&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root { --bg: #F5F5F5; --text: #2D2B2A; --muted: rgba(45,43,42,0.4); --border: rgba(45,43,42,0.15); --accent: #2D2B2A; }
+    body { background: var(--bg); color: var(--text); font-family: 'Inter', sans-serif; font-size: 14px; }
+
+    /* Layout */
+    .app { display: grid; grid-template-columns: 240px 1fr; min-height: 100vh; }
+    .sidebar { background: #fff; border-right: 1px solid var(--border); padding: 24px 0; position: sticky; top: 0; height: 100vh; overflow-y: auto; }
+    .main { padding: 40px 48px; }
+
+    /* Sidebar */
+    .sidebar-logo { padding: 0 20px 24px; border-bottom: 1px solid var(--border); margin-bottom: 8px; }
+    .sidebar-logo img { width: 24px; }
+    .sidebar-nav a { display: block; padding: 8px 20px; font-size: 13px; font-weight: 400; color: var(--text); text-decoration: none; border-radius: 0; transition: background 0.15s; }
+    .sidebar-nav a:hover, .sidebar-nav a.active { background: var(--bg); }
+    .sidebar-section { padding: 16px 20px 6px; font-size: 10px; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
+
+    /* Header */
+    .page-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 36px; }
+    .page-title { font-family: 'Inter Tight', sans-serif; font-size: 22px; font-weight: 500; letter-spacing: -0.02em; }
+
+    /* Buttons */
+    .btn { display: inline-flex; align-items: center; gap: 6px; padding: 8px 16px; border-radius: 6px; font-family: 'Inter', sans-serif; font-size: 13px; font-weight: 400; cursor: pointer; border: none; transition: opacity 0.15s; }
+    .btn:hover { opacity: 0.75; }
+    .btn-primary { background: var(--text); color: #fff; }
+    .btn-secondary { background: transparent; border: 1px solid var(--border); color: var(--text); }
+    .btn-danger { background: #fee; color: #c00; border: 1px solid #fcc; }
+    .btn-sm { padding: 5px 10px; font-size: 12px; }
+
+    /* Cards / List */
+    .card { background: #fff; border: 1px solid var(--border); border-radius: 8px; overflow: hidden; }
+    .list-item { display: flex; align-items: center; gap: 14px; padding: 14px 16px; border-bottom: 1px solid var(--border); cursor: grab; transition: background 0.1s; }
+    .list-item:last-child { border-bottom: none; }
+    .list-item:hover { background: var(--bg); }
+    .list-item.dragging { opacity: 0.4; }
+    .list-item.drag-over { border-top: 2px solid var(--text); }
+    .drag-handle { color: var(--muted); cursor: grab; font-size: 16px; flex-shrink: 0; }
+    .item-thumb { width: 56px; height: 40px; object-fit: cover; border-radius: 4px; background: #eee; flex-shrink: 0; }
+    .item-info { flex: 1; min-width: 0; }
+    .item-title { font-size: 13px; font-weight: 400; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .item-meta { font-size: 11px; color: var(--muted); margin-top: 2px; }
+    .item-actions { display: flex; gap: 6px; flex-shrink: 0; }
+
+    /* Form */
+    .panel { display: none; }
+    .panel.active { display: block; }
+    .form-grid { display: grid; gap: 20px; }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    .field { display: flex; flex-direction: column; gap: 6px; }
+    .field label { font-size: 12px; font-weight: 500; color: var(--muted); text-transform: uppercase; letter-spacing: 0.06em; }
+    .field input, .field textarea, .field select { font-family: 'Inter', sans-serif; font-size: 14px; padding: 9px 12px; border: 1px solid var(--border); border-radius: 6px; background: #fff; color: var(--text); outline: none; transition: border-color 0.15s; width: 100%; }
+    .field input:focus, .field textarea:focus { border-color: var(--text); }
+    .field textarea { resize: vertical; min-height: 90px; line-height: 1.5; }
+
+    /* Image list in case editor */
+    .img-list { display: grid; gap: 8px; }
+    .img-item { display: flex; align-items: center; gap: 10px; padding: 8px 12px; background: var(--bg); border-radius: 6px; }
+    .img-item img, .img-item video { width: 64px; height: 44px; object-fit: cover; border-radius: 4px; background: #ddd; }
+    .img-item-path { flex: 1; font-size: 12px; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+    /* Asset picker */
+    .asset-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: 10px; margin-top: 12px; }
+    .asset-thumb { position: relative; cursor: pointer; border-radius: 6px; overflow: hidden; border: 2px solid transparent; transition: border-color 0.15s; }
+    .asset-thumb:hover { border-color: var(--text); }
+    .asset-thumb.selected { border-color: var(--text); }
+    .asset-thumb img, .asset-thumb video { width: 100%; height: 80px; object-fit: cover; display: block; background: #eee; }
+    .asset-thumb-name { font-size: 10px; padding: 4px 6px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; background: #fff; }
+
+    /* Modal */
+    .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.3); z-index: 1000; align-items: center; justify-content: center; }
+    .modal-overlay.open { display: flex; }
+    .modal { background: #fff; border-radius: 10px; width: 680px; max-height: 80vh; display: flex; flex-direction: column; }
+    .modal-header { display: flex; align-items: center; justify-content: space-between; padding: 16px 20px; border-bottom: 1px solid var(--border); }
+    .modal-title { font-size: 15px; font-weight: 500; }
+    .modal-close { background: none; border: none; cursor: pointer; font-size: 18px; color: var(--muted); }
+    .modal-body { padding: 20px; overflow-y: auto; flex: 1; }
+    .modal-footer { padding: 12px 20px; border-top: 1px solid var(--border); display: flex; justify-content: flex-end; gap: 8px; }
+
+    /* Upload zone */
+    .upload-zone { border: 2px dashed var(--border); border-radius: 8px; padding: 24px; text-align: center; cursor: pointer; transition: border-color 0.15s; }
+    .upload-zone:hover { border-color: var(--text); }
+    .upload-zone input { display: none; }
+
+    /* Toast */
+    .toast { position: fixed; bottom: 24px; right: 24px; background: var(--text); color: #fff; padding: 10px 18px; border-radius: 6px; font-size: 13px; opacity: 0; transition: opacity 0.2s; z-index: 9999; pointer-events: none; }
+    .toast.show { opacity: 1; }
+
+    /* Tabs */
+    .tabs { display: flex; gap: 0; border-bottom: 1px solid var(--border); margin-bottom: 28px; }
+    .tab { padding: 10px 0; margin-right: 24px; font-size: 13px; font-weight: 400; color: var(--muted); cursor: pointer; border-bottom: 2px solid transparent; margin-bottom: -1px; }
+    .tab.active { color: var(--text); border-bottom-color: var(--text); }
+
+    .section-gap { margin-top: 32px; }
+    .label { font-size: 12px; font-weight: 500; color: var(--muted); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 10px; }
+  </style>
+</head>
+<body>
+
+<div class="app">
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="sidebar-logo">
+      <img src="logo.svg" alt="Peder Anzén" />
+    </div>
+    <div class="sidebar-nav">
+      <div class="sidebar-section">Pages</div>
+      <a href="#" class="active" onclick="showPanel('homepage')">Start Page</a>
+      <a href="#" onclick="showPanel('cases')">Cases</a>
+      <div class="sidebar-section">Assets</div>
+      <a href="#" onclick="showPanel('assets')">Media Library</a>
+      <div class="sidebar-section">Preview</div>
+      <a href="/" target="_blank">↗ View Site</a>
+      <a href="/about.html" target="_blank">↗ About Page</a>
+    </div>
+  </aside>
+
+  <!-- Main -->
+  <main class="main">
+
+    <!-- Homepage Panel -->
+    <div class="panel active" id="panel-homepage">
+      <div class="page-header">
+        <h1 class="page-title">Start Page</h1>
+        <div style="display:flex;gap:8px">
+          <button class="btn btn-secondary btn-sm" onclick="addHomepageItem()">+ Add Item</button>
+          <button class="btn btn-primary" onclick="saveHomepage()">Save</button>
+        </div>
+      </div>
+      <p style="color:var(--muted);font-size:13px;margin-bottom:20px;">Drag to reorder. Each item links to a case page.</p>
+      <div class="card">
+        <div id="homepage-list"></div>
+      </div>
+    </div>
+
+    <!-- Cases Panel -->
+    <div class="panel" id="panel-cases">
+      <div class="page-header">
+        <h1 class="page-title">Cases</h1>
+        <div style="display:flex;gap:8px">
+        <button class="btn btn-secondary" onclick="generateAll()">Generate All</button>
+        <button class="btn btn-primary" onclick="openNewCase()">+ New Case</button>
+      </div>
+      </div>
+      <div class="card">
+        <div id="cases-list"></div>
+      </div>
+    </div>
+
+    <!-- Case Editor Panel -->
+    <div class="panel" id="panel-case-editor">
+      <div class="page-header">
+        <div style="display:flex;align-items:center;gap:12px">
+          <button class="btn btn-secondary btn-sm" onclick="showPanel('cases')">← Back</button>
+          <h1 class="page-title" id="editor-title">Edit Case</h1>
+        </div>
+        <div style="display:flex;gap:8px">
+          <a class="btn btn-secondary btn-sm" id="editor-preview-link" href="#" target="_blank">↗ Preview</a>
+          <button class="btn btn-primary" onclick="saveCase()">Save Case</button>
+        </div>
+      </div>
+
+      <div class="form-grid">
+        <input type="hidden" id="editor-id" />
+        <div class="form-row">
+          <div class="field">
+            <label>Title</label>
+            <input type="text" id="editor-title-input" placeholder="Epidemic Sound — Rebrand" />
+          </div>
+          <div class="field">
+            <label>Role</label>
+            <input type="text" id="editor-role" placeholder="Lead Design" />
+          </div>
+        </div>
+
+        <div class="field">
+          <label>Description paragraphs (one per line)</label>
+          <textarea id="editor-desc" rows="6" placeholder="First paragraph&#10;Second paragraph"></textarea>
+        </div>
+
+        <div>
+          <div class="label">Images & Media <span style="font-weight:300;text-transform:none;letter-spacing:0;color:var(--muted);font-size:11px;">— drag to reorder · click ⊞ to pair two into a 2-column row</span></div>
+          <div class="img-list" id="editor-images"></div>
+          <button class="btn btn-secondary btn-sm" style="margin-top:10px" onclick="openAssetPicker('images')">+ Add Image / Video</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Assets Panel -->
+    <div class="panel" id="panel-assets">
+      <div class="page-header">
+        <h1 class="page-title">Media Library</h1>
+      </div>
+      <div class="upload-zone" onclick="document.getElementById('file-upload').click()">
+        <input type="file" id="file-upload" multiple accept="image/*,video/*" onchange="uploadFiles(this.files)" />
+        <p style="font-size:14px;color:var(--muted)">Click to upload images or videos</p>
+        <p style="font-size:12px;color:var(--muted);margin-top:4px">PNG, JPG, GIF, MP4, MOV</p>
+      </div>
+      <div class="asset-grid" id="asset-grid" style="margin-top:20px"></div>
+    </div>
+
+  </main>
+</div>
+
+<!-- Asset Picker Modal -->
+<div class="modal-overlay" id="asset-modal">
+  <div class="modal">
+    <div class="modal-header">
+      <span class="modal-title">Choose Media</span>
+      <button class="modal-close" onclick="closeAssetModal()">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="upload-zone" style="margin-bottom:16px" onclick="document.getElementById('modal-upload').click()">
+        <input type="file" id="modal-upload" multiple accept="image/*,video/*" onchange="uploadFiles(this.files,true)" />
+        <p style="font-size:13px;color:var(--muted)">Upload new file</p>
+      </div>
+      <div class="asset-grid" id="modal-asset-grid"></div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-secondary" onclick="closeAssetModal()">Cancel</button>
+      <button class="btn btn-primary" onclick="confirmAssetSelection()">Add Selected</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+let content = {};
+let assets = [];
+let currentPickerTarget = null;
+let selectedAssets = [];
+let editorImages = [];
+let dragSrc = null;
+
+// --- Init ---
+async function init() {
+  [content, assets] = await Promise.all([
+    fetch('/api/content').then(r => r.json()),
+    fetch('/api/assets').then(r => r.json())
+  ]);
+  renderHomepage();
+  renderCases();
+  renderAssetGrid();
+}
+
+// --- Panel nav ---
+function showPanel(name) {
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+  document.getElementById('panel-' + name).classList.add('active');
+  document.querySelectorAll('.sidebar-nav a').forEach(a => a.classList.remove('active'));
+  const map = { homepage: 0, cases: 1, assets: 2 };
+  const links = document.querySelectorAll('.sidebar-nav a');
+  if (map[name] !== undefined) links[map[name]].classList.add('active');
+}
+
+// --- Homepage ---
+function renderHomepage() {
+  const list = document.getElementById('homepage-list');
+  list.innerHTML = '';
+  content.homepage.forEach((item, i) => {
+    const el = document.createElement('div');
+    el.className = 'list-item';
+    el.draggable = true;
+    el.dataset.index = i;
+    const isVideo = item.type === 'video' || /\.(mp4|mov|webm)$/i.test(item.asset);
+    const thumb = isVideo
+      ? `<video class="item-thumb" src="${item.asset}" muted></video>`
+      : `<img class="item-thumb" src="${item.asset}" />`;
+    el.innerHTML = `
+      <span class="drag-handle">⠿</span>
+      ${thumb}
+      <div class="item-info">
+        <div class="item-title">${item.title}</div>
+        <div class="item-meta">${item.id} · ${item.type}</div>
+      </div>
+      <div class="item-actions">
+        <button class="btn btn-secondary btn-sm" onclick="editHomepageItem(${i})">Edit</button>
+        <button class="btn btn-danger btn-sm" onclick="removeHomepageItem(${i})">✕</button>
+      </div>`;
+
+    el.addEventListener('dragstart', e => { dragSrc = el; el.classList.add('dragging'); e.dataTransfer.effectAllowed = 'move'; });
+    el.addEventListener('dragend', () => el.classList.remove('dragging'));
+    el.addEventListener('dragover', e => { e.preventDefault(); el.classList.add('drag-over'); });
+    el.addEventListener('dragleave', () => el.classList.remove('drag-over'));
+    el.addEventListener('drop', e => {
+      e.preventDefault();
+      el.classList.remove('drag-over');
+      if (dragSrc === el) return;
+      const from = parseInt(dragSrc.dataset.index);
+      const to = parseInt(el.dataset.index);
+      const [moved] = content.homepage.splice(from, 1);
+      content.homepage.splice(to, 0, moved);
+      renderHomepage();
+    });
+    list.appendChild(el);
+  });
+}
+
+function addHomepageItem() {
+  content.homepage.push({ id: 'new-case', title: 'New Case', asset: '', type: 'image' });
+  renderHomepage();
+  editHomepageItem(content.homepage.length - 1);
+}
+
+function editHomepageItem(i) {
+  const item = content.homepage[i];
+  const id = prompt('Case ID (e.g. aira):', item.id); if (id === null) return;
+  const title = prompt('Title:', item.title); if (title === null) return;
+  const asset = prompt('Asset path (e.g. assets/aira.png):', item.asset); if (asset === null) return;
+  const type = /\.(mp4|mov|webm)$/i.test(asset) ? 'video' : 'image';
+  content.homepage[i] = { id: id.trim(), title: title.trim(), asset: asset.trim(), type };
+  renderHomepage();
+}
+
+function removeHomepageItem(i) {
+  if (!confirm('Remove this item from the start page?')) return;
+  content.homepage.splice(i, 1);
+  renderHomepage();
+}
+
+async function saveHomepage() {
+  await fetch('/api/content', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(content) });
+  toast('Start page saved ✓');
+}
+
+// --- Cases ---
+function renderCases() {
+  const list = document.getElementById('cases-list');
+  list.innerHTML = '';
+  Object.entries(content.cases).forEach(([id, c]) => {
+    const el = document.createElement('div');
+    el.className = 'list-item';
+    el.innerHTML = `
+      <div class="item-info">
+        <div class="item-title">${c.title}</div>
+        <div class="item-meta">${c.role} · ${(c.rows || []).flat().length} file${(c.rows || []).flat().length !== 1 ? 's' : ''}</div>
+      </div>
+      <div class="item-actions">
+        <button class="btn btn-secondary btn-sm" onclick="generateCase('${id}')">Generate</button>
+        <a class="btn btn-secondary btn-sm" href="cases/${id}.html" target="_blank">↗</a>
+        <button class="btn btn-secondary btn-sm" onclick="editCase('${id}')">Edit</button>
+        <button class="btn btn-danger btn-sm" onclick="deleteCase('${id}')">✕</button>
+      </div>`;
+    list.appendChild(el);
+  });
+}
+
+function openNewCase() {
+  const id = prompt('Case ID (e.g. my-new-case):'); if (!id) return;
+  content.cases[id] = { title: 'New Case', role: '', description: [''], images: [], video: null, prev: null, next: null };
+  renderCases();
+  editCase(id);
+}
+
+// editorRows: array of arrays, e.g. [["img1.png"], ["img2.png","img3.png"], ["vid.mp4"]]
+let editorRows = [];
+
+function editCase(id) {
+  const c = content.cases[id];
+  document.getElementById('editor-id').value = id;
+  document.getElementById('editor-title').textContent = c.title;
+  document.getElementById('editor-title-input').value = c.title;
+  document.getElementById('editor-role').value = c.role;
+  document.getElementById('editor-desc').value = c.description.join('\n');
+  document.getElementById('editor-preview-link').href = `cases/${id}.html`;
+  // Support old format (images + video) and new format (rows)
+  if (c.rows) {
+    editorRows = JSON.parse(JSON.stringify(c.rows));
+  } else {
+    editorRows = (c.images || []).map(src => [src]);
+    if (c.video) editorRows.push([c.video]);
+  }
+  renderEditorRows();
+  showPanel('case-editor');
+}
+
+function getRowFiles(row) { return Array.isArray(row) ? row : (row.files || []); }
+function getRowCaptions(row) { return Array.isArray(row) ? [] : (row.captions || (row.caption ? [row.caption] : [])); }
+function getRowLayout(row) { return Array.isArray(row) ? null : (row.layout || null); }
+function setRowCaption(ri, ci, val) {
+  const row = editorRows[ri];
+  const files = getRowFiles(row);
+  const captions = [...getRowCaptions(row)];
+  captions[ci] = val;
+  const hasCaptions = captions.some(Boolean);
+  const layout = getRowLayout(row);
+  editorRows[ri] = (hasCaptions || layout) ? { files, captions: hasCaptions ? captions : undefined, layout: layout || undefined } : files;
+}
+
+function makeMasonry(ri) {
+  // Collect consecutive single-image rows starting at ri and merge into masonry
+  var collected = [];
+  var i = ri;
+  while (i < editorRows.length && getRowFiles(editorRows[i]).length === 1 && !getRowLayout(editorRows[i])) {
+    collected.push(getRowFiles(editorRows[i])[0]);
+    i++;
+  }
+  if (collected.length < 2) { alert('Select at least 2 consecutive single images to create a masonry group.'); return; }
+  editorRows.splice(ri, collected.length, { files: collected, layout: 'masonry' });
+  renderEditorRows();
+}
+
+function unmakeMasonry(ri) {
+  var files = getRowFiles(editorRows[ri]);
+  var singles = files.map(function(f) { return [f]; });
+  editorRows.splice.apply(editorRows, [ri, 1].concat(singles));
+  renderEditorRows();
+}
+
+function renderEditorRows() {
+  const list = document.getElementById('editor-images');
+  list.innerHTML = '';
+  editorRows.forEach((row, ri) => {
+    const files = getRowFiles(row);
+    const el = document.createElement('div');
+    el.className = 'img-item';
+    el.style.cssText = 'align-items:stretch;gap:8px;padding:8px;flex-wrap:wrap;';
+    el.draggable = true;
+    el.dataset.row = ri;
+
+    const isMasonry = getRowLayout(row) === 'masonry';
+    const canPair = !isMasonry && files.length === 1 && ri < editorRows.length - 1 && getRowFiles(editorRows[ri + 1]).length === 1;
+    const canMasonry = !isMasonry && files.length === 1 && ri < editorRows.length - 1 && getRowFiles(editorRows[ri + 1]).length === 1;
+    const captions = getRowCaptions(row);
+
+    // Handle drag
+    var handle = document.createElement('span');
+    handle.textContent = '⠿';
+    handle.style.cssText = 'font-size:14px;color:var(--muted);align-self:center;cursor:grab;';
+    el.appendChild(handle);
+
+    // Thumbnails
+    var thumbWrap = document.createElement('div');
+    thumbWrap.style.cssText = 'display:flex;gap:6px;align-items:center;';
+    files.forEach(function(src, ci) {
+      var wrap = document.createElement('div');
+      wrap.style.cssText = 'position:relative;display:inline-block;';
+      var isVid = /\.(mp4|mov|webm)$/i.test(src);
+      var media = document.createElement(isVid ? 'video' : 'img');
+      media.src = src;
+      media.style.cssText = 'width:64px;height:44px;object-fit:cover;border-radius:4px;background:#ddd;display:block;';
+      if (isVid) media.muted = true;
+      wrap.appendChild(media);
+      if (files.length > 1) {
+        var ub = document.createElement('button');
+        ub.textContent = '✕';
+        ub.title = 'Make full width';
+        ub.style.cssText = 'position:absolute;top:-4px;right:-4px;background:#fff;border:1px solid #ddd;border-radius:50%;width:16px;height:16px;font-size:9px;cursor:pointer;padding:0;';
+        ub.addEventListener('click', (function(r, c) { return function() { unsplit(r, c); }; })(ri, ci));
+        wrap.appendChild(ub);
+      }
+      thumbWrap.appendChild(wrap);
+    });
+    el.appendChild(thumbWrap);
+
+    // Caption inputs
+    var capWrap = document.createElement('div');
+    capWrap.style.cssText = 'flex:1;display:flex;flex-direction:column;gap:6px;min-width:160px;';
+    files.forEach(function(src, ci) {
+      var grp = document.createElement('div');
+      grp.style.cssText = 'display:flex;flex-direction:column;gap:2px;';
+      var lbl = document.createElement('span');
+      lbl.textContent = src.split('/').pop();
+      lbl.style.cssText = 'font-size:10px;color:var(--muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;';
+      var inp = document.createElement('input');
+      inp.type = 'text';
+      inp.placeholder = 'Caption…';
+      inp.value = captions[ci] || '';
+      inp.style.cssText = 'font-family:Inter,sans-serif;font-size:12px;padding:4px 8px;border:1px solid var(--border);border-radius:4px;color:var(--text);background:#fff;width:100%;';
+      inp.addEventListener('input', (function(r, c) { return function() { setRowCaption(r, c, this.value); }; })(ri, ci));
+      grp.appendChild(lbl);
+      grp.appendChild(inp);
+      capWrap.appendChild(grp);
+    });
+    el.appendChild(capWrap);
+
+    // Action buttons
+    var actions = document.createElement('div');
+    actions.style.cssText = 'display:flex;gap:4px;align-self:center;flex-wrap:wrap;';
+
+    if (isMasonry) {
+      var badge = document.createElement('span');
+      badge.textContent = 'Masonry';
+      badge.style.cssText = 'font-size:10px;padding:2px 6px;border-radius:3px;background:#e8f4fd;color:#2D2B2A;font-weight:500;';
+      actions.appendChild(badge);
+      var umb = document.createElement('button');
+      umb.className = 'btn btn-secondary btn-sm';
+      umb.textContent = 'Ungroup';
+      umb.addEventListener('click', (function(r) { return function() { unmakeMasonry(r); }; })(ri));
+      actions.appendChild(umb);
+    } else {
+      if (canPair) {
+        var pb = document.createElement('button');
+        pb.className = 'btn btn-secondary btn-sm';
+        pb.textContent = '2 col';
+        pb.title = 'Show side by side';
+        pb.addEventListener('click', (function(r) { return function() { pairRows(r); }; })(ri));
+        actions.appendChild(pb);
+      }
+      if (canMasonry) {
+        var mb = document.createElement('button');
+        mb.className = 'btn btn-secondary btn-sm';
+        mb.textContent = 'Masonry';
+        mb.title = 'Group with following images into masonry';
+        mb.addEventListener('click', (function(r) { return function() { makeMasonry(r); }; })(ri));
+        actions.appendChild(mb);
+      }
+    }
+
+    var rb = document.createElement('button');
+    rb.className = 'btn btn-danger btn-sm';
+    rb.textContent = '✕';
+    rb.addEventListener('click', (function(r) { return function() { removeRow(r); }; })(ri));
+    actions.appendChild(rb);
+    el.appendChild(actions);
+
+    el.addEventListener('dragstart', function(e) { dragSrc = el; el.classList.add('dragging'); });
+    el.addEventListener('dragend', function() { el.classList.remove('dragging'); });
+    el.addEventListener('dragover', function(e) { e.preventDefault(); el.classList.add('drag-over'); });
+    el.addEventListener('dragleave', function() { el.classList.remove('drag-over'); });
+    el.addEventListener('drop', function(e) {
+      e.preventDefault(); el.classList.remove('drag-over');
+      if (dragSrc === el) return;
+      var from = parseInt(dragSrc.dataset.row), to = parseInt(el.dataset.row);
+      var moved = editorRows.splice(from, 1)[0]; editorRows.splice(to, 0, moved);
+      renderEditorRows();
+    });
+    list.appendChild(el);
+  });
+}
+
+function pairRows(ri) {
+  var f1 = getRowFiles(editorRows[ri])[0];
+  var f2 = getRowFiles(editorRows[ri + 1])[0];
+  editorRows.splice(ri, 2, [f1, f2]);
+  renderEditorRows();
+}
+
+function unsplit(ri, ci) {
+  var files = getRowFiles(editorRows[ri]);
+  editorRows.splice(ri, 1, [files[0]], [files[1]]);
+  renderEditorRows();
+}
+
+function removeRow(ri) { editorRows.splice(ri, 1); renderEditorRows(); }
+
+async function saveCase() {
+  const id = document.getElementById('editor-id').value;
+  const title = document.getElementById('editor-title-input').value;
+  const role = document.getElementById('editor-role').value;
+  const desc = document.getElementById('editor-desc').value.split('\n').map(s => s.trim()).filter(Boolean);
+  content.cases[id] = { ...content.cases[id], title, role, description: desc, rows: editorRows };
+  document.getElementById('editor-title').textContent = title;
+  await fetch('/api/content', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(content) });
+  renderCases();
+  toast('Case saved ✓');
+}
+
+async function generateCase(id) {
+  await fetch('/api/content', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(content) });
+  const res = await fetch(`/api/generate/${id}`, { method: 'POST' });
+  const data = await res.json();
+  if (data.ok) toast(`Generated ${data.file} ✓`);
+}
+
+async function generateAll() {
+  await fetch('/api/content', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(content) });
+  const ids = Object.keys(content.cases);
+  for (const id of ids) await fetch(`/api/generate/${id}`, { method: 'POST' });
+  toast(`Generated ${ids.length} case pages ✓`);
+}
+
+function deleteCase(id) {
+  if (!confirm(`Delete case "${content.cases[id].title}"?`)) return;
+  delete content.cases[id];
+  content.homepage = content.homepage.filter(h => h.id !== id);
+  renderCases(); renderHomepage();
+  saveHomepage();
+}
+
+// --- Assets ---
+function renderAssetGrid(targetId = 'asset-grid', selectable = false) {
+  const grid = document.getElementById(targetId);
+  grid.innerHTML = '';
+  assets.forEach(a => {
+    const isVideo = /\.(mp4|mov|webm)$/i.test(a.name);
+    const el = document.createElement('div');
+    el.className = 'asset-thumb' + (selectable && selectedAssets.includes(a.path) ? ' selected' : '');
+    el.innerHTML = `
+      ${isVideo ? `<video src="${a.path}" muted></video>` : `<img src="${a.path}" />`}
+      <div class="asset-thumb-name">${a.name}</div>`;
+    if (selectable) {
+      el.onclick = () => {
+        if (selectedAssets.includes(a.path)) {
+          selectedAssets = selectedAssets.filter(p => p !== a.path);
+          el.classList.remove('selected');
+        } else {
+          selectedAssets.push(a.path);
+          el.classList.add('selected');
+        }
+      };
+    }
+    grid.appendChild(el);
+  });
+}
+
+async function uploadFiles(files, inModal = false) {
+  const fd = new FormData();
+  [...files].forEach(f => fd.append('files', f));
+  await fetch('/api/upload', { method: 'POST', body: fd });
+  assets = await fetch('/api/assets').then(r => r.json());
+  renderAssetGrid('asset-grid');
+  if (inModal) renderAssetGrid('modal-asset-grid', true);
+  toast('Uploaded ✓');
+}
+
+// --- Asset Picker Modal ---
+function openAssetPicker(target) {
+  currentPickerTarget = target;
+  selectedAssets = [];
+  renderAssetGrid('modal-asset-grid', true);
+  document.getElementById('asset-modal').classList.add('open');
+}
+
+function closeAssetModal() {
+  document.getElementById('asset-modal').classList.remove('open');
+  selectedAssets = [];
+}
+
+function confirmAssetSelection() {
+  // Each selected asset becomes a new single-column row
+  const existing = editorRows.flat();
+  selectedAssets.forEach(path => { if (!existing.includes(path)) editorRows.push([path]); });
+  renderEditorRows();
+  closeAssetModal();
+}
+
+// --- Toast ---
+function toast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2200);
+}
+
+init();
+</script>
+</body>
+</html>

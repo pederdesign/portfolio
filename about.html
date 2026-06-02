@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>About — Peder Anzén</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&family=Inter+Tight:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="case.css" />
+  <style>
+    /* ── About Hero ── */
+    .about-hero {
+      position: relative;
+      width: 100%;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    .about-hero-img {
+      position: absolute;
+      top: -15%;
+      left: 0;
+      width: 100%;
+      height: 130%;
+      object-fit: cover;
+      object-position: center center;
+      filter: grayscale(1);
+      will-change: transform;
+    }
+
+    .about-hero-title {
+      position: absolute;
+      top: 50%;
+      left: 0;
+      right: 0;
+      transform: translateY(-50%);
+      padding: 0 var(--margin);
+      font-family: "Inter Tight", sans-serif;
+      font-size: 100px; /* set by JS */
+      font-weight: 500;
+      letter-spacing: -0.03em;
+      line-height: 0.88;
+      color: #fff;
+      pointer-events: none;
+      text-align: center;
+      white-space: nowrap;
+    }
+
+    /* ── About Body ── */
+    .about-body {
+      padding: 100px var(--margin) 0;
+      display: flex;
+      flex-direction: column;
+      gap: 140px;
+      max-width: 1300px;
+      margin: 0 auto;
+    }
+
+    .about-bio {
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+
+    .about-bio p {
+      font-family: 'Inter Tight', sans-serif;
+      font-size: 44px;
+      font-weight: 500;
+      line-height: 1.45;
+      color: #2D2B2A;
+      letter-spacing: -0.02em;
+    }
+
+    /* ── Experience ── */
+    .about-experience {
+      padding-top: 4px;
+    }
+
+    .exp-item {
+      display: grid;
+      grid-template-columns: 140px 1fr;
+      gap: 0 32px;
+      padding: 28px 0;
+      border-bottom: 1px solid rgba(45,43,42,0.25);
+    }
+
+    .exp-item:first-child {
+      border-top: 1px solid rgba(45,43,42,0.25);
+    }
+
+    .exp-years {
+      font-family: 'Inter', sans-serif;
+      font-size: 13px;
+      font-weight: 400;
+      color: rgba(45,43,42,0.4);
+      padding-top: 5px;
+    }
+
+    .exp-content {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .exp-role {
+      font-family: 'Inter Tight', sans-serif;
+      font-size: 24px;
+      font-weight: 400;
+      color: #2D2B2A;
+      letter-spacing: -0.01em;
+    }
+
+    .exp-desc {
+      font-family: 'Inter', sans-serif;
+      font-size: 17px;
+      font-weight: 400;
+      line-height: 1.6;
+      color: rgba(45,43,42,0.7);
+    }
+  </style>
+</head>
+<body>
+
+  <header class="site-header">
+    <a href="/" class="logo-link">
+      <img src="logo.svg" alt="Peder Anzén" class="logo" />
+    </a>
+    <nav class="site-nav">
+      <a href="/">Work</a>
+      <a href="/about.html" style="text-decoration: underline; text-underline-offset: 4px;">About</a>
+    </nav>
+  </header>
+
+  <main>
+
+    <section class="about-hero">
+      <img class="about-hero-img" src="assets/tempImagewoP4N5.jpg" alt="Peder Anzén" />
+      <h1 class="about-hero-title">Halloj.</h1>
+    </section>
+
+    <div class="about-body">
+
+      <div class="about-bio">
+        <p class="reveal">I'm Peder Anzén — a Design Lead and Art Director based in Stockholm, with a background spanning advertising, brand, and product design.</p>
+        <p class="reveal">Currently leading design at Aira.</p>
+        <p class="reveal">I believe great design emerges from making, not just planning. I value strategy, but I know ideas only prove themselves in execution — in the details, the iterations, what people actually experience.</p>
+        <p class="reveal">The process is a conversation, not an artifact.</p>
+      </div>
+
+      <div class="about-experience reveal">
+        <div class="exp-item reveal">
+          <span class="exp-years">2024 — Now</span>
+          <div class="exp-content">
+            <span class="exp-role">Aira / Lead Designer</span>
+            <span class="exp-desc">Leading design for customer-facing apps and internal tools. Owning quality and craft end to end — from early direction to final execution.</span>
+          </div>
+        </div>
+        <div class="exp-item reveal">
+          <span class="exp-years">2022 — 2024</span>
+          <div class="exp-content">
+            <span class="exp-role">Epidemic Sound / Lead Product Designer</span>
+            <span class="exp-desc">Led the redesign of Epidemic Sound's homepage and public web. Defined visual direction and raised the bar for craft across the brand's most visible surfaces.</span>
+          </div>
+        </div>
+        <div class="exp-item reveal">
+          <span class="exp-years">2017 — 2022</span>
+          <div class="exp-content">
+            <span class="exp-role">Viaplay / Lead Designer</span>
+            <span class="exp-desc">Five years shaping one of Scandinavia's largest streaming platforms. Led design across platform redesign, Android TV, design systems, trailers, post-play, and content discovery.</span>
+          </div>
+        </div>
+        <div class="exp-item reveal">
+          <span class="exp-years">2013 — 2017</span>
+          <div class="exp-content">
+            <span class="exp-role">Ottoboni / Art Director</span>
+            <span class="exp-desc">Art direction for major Swedish brands including E.ON, Bonnier, Försvarsmakten and Telia — spanning brand identity, digital experiences, and campaigns.</span>
+          </div>
+        </div>
+        <div class="exp-item reveal">
+          <span class="exp-years">2010 — 2013</span>
+          <div class="exp-content">
+            <span class="exp-role">A Perfect World / Creative Director & Partner</span>
+            <span class="exp-desc">Creative Director and Partner. Built and ran a studio serving clients like Fotografiska, Gudrun Sjödén, Gant, and Svenska Spel.</span>
+          </div>
+        </div>
+        <div class="exp-item reveal">
+          <span class="exp-years">2005 — 2010</span>
+          <div class="exp-content">
+            <span class="exp-role">Infobahn / Art Director</span>
+            <span class="exp-desc">Early career doing broad, fast, real work — Ericsson, IMG, Betsson, Skolverket, Swedish Style Tokyo and Bob Hund (Sci-Fi Skåne).</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+  </main>
+
+  <footer class="site-footer reveal" style="margin-top: 160px;">
+    <span class="footer-name">
+      <img src="logo.svg" alt="" class="footer-logo" />
+      Peder Anzén
+    </span>
+    <a class="footer-linkedin" href="https://www.linkedin.com/in/pederanzen" target="_blank" rel="noopener" aria-label="LinkedIn">
+      <svg width="28" height="28" viewBox="0 0 64 64" fill="currentColor">
+        <rect x="20.4" y="26.6" width="5.4" height="17.4"/>
+        <circle cx="23.1" cy="21.2" r="3.1"/>
+        <path d="M29.2,26.6h5.2V29h0.1c0.7-1.4,2.5-2.8,5.1-2.8c5.5,0,6.5,3.6,6.5,8.3V44h-5.4v-8.4c0-2,0-4.6-2.8-4.6c-2.8,0-3.2,2.2-3.2,4.5V44h-5.4V26.6z"/>
+      </svg>
+    </a>
+    <a class="footer-hello" href="mailto:hey@peder.design">Say Hello!</a>
+  </footer>
+
+  <script>
+    // Parallax on hero image
+    const heroImg = document.querySelector('.about-hero-img');
+    const hero = document.querySelector('.about-hero');
+    let ticking = false;
+
+    function updateParallax() {
+      const scrollY = window.scrollY;
+      const heroH = hero.offsetHeight;
+      if (scrollY <= heroH * 1.5) {
+        heroImg.style.transform = `translateY(${scrollY * 0.35}px)`;
+      }
+      ticking = false;
+    }
+
+    window.addEventListener('scroll', () => {
+      if (!ticking) {
+        requestAnimationFrame(updateParallax);
+        ticking = true;
+      }
+    }, { passive: true });
+  </script>
+  <script src="case.js"></script>
+  <script>
+    function scaleHalloj() {
+      const title = document.querySelector('.about-hero-title');
+      if (!title) return;
+
+      // Get computed margin value
+      const probe = document.createElement('div');
+      probe.style.cssText = 'position:absolute;visibility:hidden;padding-left:var(--margin)';
+      document.body.appendChild(probe);
+      const margin = parseFloat(getComputedStyle(probe).paddingLeft);
+      document.body.removeChild(probe);
+
+      // Measure text at known size
+      const basePx = 200;
+      const clone = document.createElement('span');
+      clone.textContent = title.textContent.trim();
+      clone.style.cssText = `position:fixed;top:-9999px;left:-9999px;white-space:nowrap;font-family:"Inter Tight",sans-serif;font-weight:500;font-size:${basePx}px;letter-spacing:-0.03em;`;
+      document.body.appendChild(clone);
+      const textWidth = clone.getBoundingClientRect().width;
+      document.body.removeChild(clone);
+
+      const containerWidth = window.innerWidth - margin * 2;
+      title.style.fontSize = (basePx * containerWidth / textWidth) + 'px';
+    }
+
+    // Explicitly wait for Inter Tight 700 before measuring
+    document.fonts.load('500 200px "Inter Tight"').then(() => {
+      scaleHalloj();
+    }).catch(() => {
+      // Fallback if font load fails
+      scaleHalloj();
+    });
+    window.addEventListener('resize', scaleHalloj);
+  </script>
+</body>
+</html>
