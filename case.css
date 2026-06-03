@@ -92,13 +92,14 @@ body {
 
 .reveal {
   opacity: 0;
-  transform: translateY(40px);
-  transition: opacity 0.8s ease, transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+  transform: translateY(56px) scale(0.94);
+  transform-origin: center bottom;
+  transition: opacity 1.1s ease, transform 1.1s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .reveal.in {
   opacity: 1;
-  transform: translateY(0);
+  transform: translateY(0) scale(1);
 }
 
 /* ── Case Hero ── */
