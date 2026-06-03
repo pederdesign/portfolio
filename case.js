@@ -1,16 +1,27 @@
-// Scroll reveal — same as homepage
-function reveal(el) {
+// Scroll reveal — stagger on load, trigger on scroll for below-fold elements
+function reveal(el, delay) {
   const obs = new IntersectionObserver(entries => {
     if (entries[0].isIntersecting) {
       el.getBoundingClientRect();
-      el.classList.add('in');
+      if (delay) {
+        setTimeout(() => { el.classList.add('in'); }, delay);
+      } else {
+        el.classList.add('in');
+      }
       obs.disconnect();
     }
   }, { rootMargin: '0px 0px -8% 0px', threshold: 0 });
   obs.observe(el);
 }
 
-document.querySelectorAll('.reveal').forEach(reveal);
+window.addEventListener('load', () => {
+  let i = 0;
+  document.querySelectorAll('.reveal').forEach(el => {
+    const rect = el.getBoundingClientRect();
+    const inViewport = rect.top < window.innerHeight && rect.bottom > 0;
+    reveal(el, inViewport ? 100 + i++ * 150 : 0);
+  });
+});
 
 // Autoplay videos when in view, pause when out
 document.querySelectorAll('.case-video').forEach(video => {
