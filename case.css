@@ -167,23 +167,23 @@ body {
 .case-img-row {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 24px;
+  grid-template-rows: auto auto;
+  column-gap: 24px;
+  row-gap: 10px;
+  align-items: stretch;
 }
 
-/* Column wrapper inside 2-col row (for per-image captions) */
-.case-col {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-
-/* Image inside a 2-col row — natural height, not viewport */
-.case-col .case-img {
-  flex: 1;
-  min-height: 0;
+/* Images fill their shared row equally */
+.case-img-row .case-img {
   width: 100%;
-  height: auto;
+  height: 100%;
   object-fit: cover;
+  display: block;
+}
+
+/* Captions sit in the second row, aligned to their column */
+.case-img-row .case-caption {
+  align-self: start;
 }
 
 /* Masonry grid */
@@ -201,15 +201,17 @@ body {
 }
 
 .case-masonry-item {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
+  display: block;
 }
 
 .case-masonry-item .case-img {
   width: 100%;
   height: auto;
   display: block;
+}
+
+.case-masonry-item .case-caption {
+  margin-top: 10px;
 }
 
 /* Caption */

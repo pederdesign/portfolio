@@ -163,11 +163,11 @@ app.post('/api/generate/:id', (req, res) => {
       const col2 = files.filter((_, i) => i % 2 === 1).map((src, j) => makeItem(src, j * 2 + 1)).join('\n');
       inner = `<div class="case-masonry">\n        <div class="case-masonry-col">\n${col1}\n        </div>\n        <div class="case-masonry-col">\n${col2}\n        </div>\n      </div>`;
     } else if (files.length === 2) {
-      const cols = files.map((src, i) => {
-        const cap = captions[i];
-        return `<div class="case-col">\n          ${mediaTag(src)}${cap ? `\n          <p class="case-caption">${cap}</p>` : ''}\n        </div>`;
-      }).join('\n        ');
-      inner = `<div class="case-img-row">\n        ${cols}\n      </div>`;
+      // Images first (share equal height in grid row 1), captions below (grid row 2)
+      const imgs = files.map(src => `        ${mediaTag(src)}`).join('\n');
+      const caps = files.map((_, i) => `        <p class="case-caption">${captions[i] || ''}</p>`).join('\n');
+      const hasCaptions = captions.some(Boolean);
+      inner = `<div class="case-img-row">\n${imgs}${hasCaptions ? '\n' + caps : ''}\n      </div>`;
     } else {
       const cap = captions[0];
       inner = mediaTag(files[0]) + (cap ? `\n        <p class="case-caption">${cap}</p>` : '');
