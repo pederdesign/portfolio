@@ -219,13 +219,20 @@
     },
     "viaplay-moments": {
       "title": "Viaplay — Moments",
-      "role": "Lead Design",
+      "role": "Senior Product Designer",
       "description": [
-        "Viaplay Moments feature design."
+        "As a part of Hack Weeks we created a take on the Spotify Wrapped that presented your year on Viaplay. How much time you spend on viewing, on what type of content and so on. This was a collaboration between Product, Data Analysis and Customer Experience.",
+        "Viaplay is a premium video streaming service and a leading on-demand streaming service in Europe."
       ],
       "rows": [
         [
           "assets/viaplay-moments.png"
+        ],
+        [
+          "assets/hack-1.webp"
+        ],
+        [
+          "assets/hack-2.webp"
         ]
       ],
       "prev": "viaplay-android-tv",
@@ -233,16 +240,24 @@
     },
     "viaplay-trailers": {
       "title": "Viaplay — Trailers",
-      "role": "Lead Design",
+      "role": "Senior Product Designer",
       "description": [
-        "Trailer experience design for Viaplay."
+        "Introducing short trailers that autoplays without effort - to make it easier to decide on what to watch for customers.",
+        "Research, prototyping and UI design for how to bring trailers into the product the best way. Close collaboration with content team, studio and stakeholders.",
+        "Viaplay is a premium video streaming service and a leading on-demand streaming service in Europe."
       ],
       "rows": [
         [
-          "assets/viaplay-Screensaver.png"
+          "assets/viaplay-trailers.mp4"
         ],
         [
-          "assets/viaplay-trailers.mp4"
+          "assets/web-productpage-compressed.mp4"
+        ],
+        [
+          "assets/iphone-trailer.mp4"
+        ],
+        [
+          "assets/web-trailer-compress.mp4"
         ]
       ],
       "prev": "viaplay-moments",
