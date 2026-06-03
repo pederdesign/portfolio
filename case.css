@@ -22,6 +22,12 @@ body {
   font-weight: 400;
   font-style: normal;
   overflow-x: hidden;
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+
+body.loaded {
+  opacity: 1;
 }
 
 /* ── Header ── */

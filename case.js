@@ -15,6 +15,7 @@ function reveal(el, delay) {
 }
 
 window.addEventListener('load', () => {
+  document.body.classList.add('loaded');
   let i = 0;
   document.querySelectorAll('.reveal').forEach(el => {
     const rect = el.getBoundingClientRect();
