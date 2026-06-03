@@ -15,8 +15,12 @@ document.querySelectorAll('.reveal').forEach(reveal);
 // Autoplay videos when in view, pause when out
 document.querySelectorAll('.case-video').forEach(video => {
   const obs = new IntersectionObserver(entries => {
-    entries[0].isIntersecting ? video.play() : video.pause();
-  }, { threshold: 0.2 });
+    if (entries[0].isIntersecting) {
+      video.play().catch(() => {});
+    } else {
+      video.pause();
+    }
+  }, { threshold: 0.1 });
   obs.observe(video);
 });
 

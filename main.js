@@ -14,7 +14,11 @@ document.querySelectorAll('.case-image-wrap, .case-meta, .reveal').forEach(revea
 // Autoplay video when its wrap enters the viewport, pause when it leaves
 document.querySelectorAll('.case-video').forEach(video => {
   const videoObs = new IntersectionObserver(entries => {
-    entries[0].isIntersecting ? video.play() : video.pause();
-  }, { threshold: 0.2 });
+    if (entries[0].isIntersecting) {
+      video.play().catch(() => {});
+    } else {
+      video.pause();
+    }
+  }, { threshold: 0.1 });
   videoObs.observe(video);
 });

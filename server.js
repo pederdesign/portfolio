@@ -59,7 +59,7 @@ app.post('/api/generate/:id', (req, res) => {
 
   const isVideo = src => /\.(mp4|mov|webm)$/i.test(src);
   const mediaTag = src => isVideo(src)
-    ? `<video class="case-img case-video" src="../${src}" muted playsinline loop></video>`
+    ? `<video class="case-img case-video" src="../${src}" muted autoplay playsinline webkit-playsinline loop></video>`
     : `<img class="case-img" src="../${src}" alt="" />`;
 
   const rows = (c.rows || []).map(row => {
