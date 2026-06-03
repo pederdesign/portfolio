@@ -321,3 +321,55 @@ body {
 .footer-hello:hover {
   opacity: 0.5;
 }
+
+/* ── Mobile ── */
+
+@media (max-width: 680px) {
+
+  /* Tighter margins */
+  :root { --margin: 20px; }
+
+  /* Case hero title */
+  .case-hero-title {
+    font-size: clamp(2.2rem, 10vw, 3.5rem);
+  }
+
+  /* Remove description indent */
+  .case-intro {
+    padding-left: var(--margin);
+  }
+
+  /* 2-col → 1 col */
+  .case-img-row {
+    grid-template-columns: 1fr;
+  }
+
+  /* Masonry → 1 col */
+  .case-masonry {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  }
+
+  /* Case nav */
+  .case-nav-prev,
+  .case-nav-next {
+    padding: 24px 20px;
+  }
+
+  /* About bio */
+  .about-bio p {
+    font-size: 26px !important;
+  }
+
+  /* Experience — stack year above role */
+  .exp-item {
+    grid-template-columns: 1fr;
+    gap: 4px 0;
+  }
+
+  .exp-years {
+    padding-top: 0;
+  }
+
+}

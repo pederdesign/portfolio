@@ -229,3 +229,29 @@ body {
 .footer-hello:hover {
   opacity: 0.5;
 }
+
+/* ── Mobile ── */
+
+@media (max-width: 680px) {
+
+  :root { --margin: 20px; }
+
+  /* Case titles below images */
+  .case-title {
+    font-size: clamp(1rem, 5vw, 1.4rem);
+  }
+
+  /* Footer — stack vertically */
+  .site-footer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    padding: 60px 20px 40px;
+  }
+
+  .footer-hello {
+    justify-self: unset;
+  }
+
+}
