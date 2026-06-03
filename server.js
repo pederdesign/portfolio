@@ -8,6 +8,11 @@ const PORT = 3400;
 const ROOT = __dirname;
 const CONTENT_FILE = path.join(ROOT, 'content.json');
 
+// Cache-bust version — updated on every generate
+function buildVersion() {
+  return Date.now();
+}
+
 app.use(express.json());
 app.use(express.static(ROOT, { extensions: ['html'] }));
 
@@ -63,6 +68,7 @@ app.post('/api/generate-homepage', (req, res) => {
     </article>`;
   }).join('\n\n');
 
+  const v = buildVersion();
   const html = `<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -72,7 +78,7 @@ app.post('/api/generate-homepage', (req, res) => {
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&family=Inter+Tight:wght@400;500;600&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="style.css?v=8" />
+  <link rel="stylesheet" href="style.css?v=${v}" />
   <link rel="icon" href="/logo.svg" type="image/svg+xml" />
 </head>
 <body>
@@ -108,7 +114,7 @@ ${articles}
     <a class="footer-hello" href="mailto:hey@peder.design">Say Hello!</a>
   </footer>
 
-  <script src="main.js?v=11"></script>
+  <script src="main.js?v=${v}"></script>
   <script>
     let lastY = 0;
     const header = document.querySelector('.site-header');
@@ -176,6 +182,7 @@ app.post('/api/generate/:id', (req, res) => {
     return `      <div class="case-media-block reveal">\n        ${inner}\n      </div>`;
   }).join('\n');
 
+  const v = buildVersion();
   const html = `<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -185,7 +192,7 @@ app.post('/api/generate/:id', (req, res) => {
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&family=Inter+Tight:wght@400;500&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="../case.css" />
+  <link rel="stylesheet" href="../case.css?v=${v}" />
 </head>
 <body>
 
@@ -238,7 +245,7 @@ ${rows}
     <a class="footer-hello" href="mailto:hey@peder.design">Say Hello!</a>
   </footer>
 
-  <script src="../case.js"></script>
+  <script src="../case.js?v=${v}"></script>
 </body>
 </html>`;
 
