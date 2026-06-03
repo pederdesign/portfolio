@@ -43,6 +43,12 @@
       "type": "video"
     },
     {
+      "id": "viaplay-screensavers",
+      "title": "Viaplay — Screensaver",
+      "asset": "assets/Screensaver.webp",
+      "type": "image"
+    },
+    {
       "id": "other-work",
       "title": "Other Work",
       "asset": "assets/other-work.png",
@@ -257,7 +263,7 @@
           "assets/iphone-trailer.mp4"
         ],
         [
-          "assets/web-trailer-compress.mp4"
+          "assets/promo-web.gif"
         ]
       ],
       "prev": "viaplay-moments",
@@ -272,30 +278,122 @@
       "rows": [
         {
           "files": [
+            "assets/pank-overview-logo.webp"
+          ],
+          "captions": [
+            "Pank – Make Budgeting Fun. Designed and built as a personal tool, but decided to share it on the App Store – for everyone to use."
+          ]
+        },
+        [
+          "assets/silicon-poster.webp"
+        ],
+        {
+          "files": [
+            "assets/hullerombuller.webp"
+          ],
+          "captions": [
+            "3D Typeface \"Silicon\""
+          ]
+        },
+        {
+          "files": [
             "assets/other-work.png"
           ],
           "caption": "Fotografiska / Web & digital campaigns"
         },
-        [
-          "assets/70x100.png",
-          "assets/poster-wall.png"
-        ],
+        {
+          "files": [
+            "assets/fall-leaf.70x100.webp",
+            "assets/leaf-interior.webp"
+          ],
+          "captions": [
+            "Graphic posters"
+          ]
+        },
+        {
+          "files": [
+            "assets/70x100.png",
+            "assets/poster-wall.png"
+          ],
+          "captions": [
+            "Graphic posters"
+          ]
+        },
+        {
+          "files": [
+            "assets/Frilans_Finans_30s_Online_WIP_H.264.mov"
+          ],
+          "captions": [
+            "Frilans Finans / TV Ad"
+          ]
+        },
         {
           "files": [
             "assets/Farinelli_Musikaliska2.jpg",
             "assets/bonnier.001.png",
-            "assets/bookbeat.png"
+            "assets/bookbeat.png",
+            "assets/Musikaliska_CI.webp",
+            "assets/vive_marianne.webp",
+            "assets/edsbyn_designtavling.webp",
+            "assets/fst_visitkort.webp",
+            "assets/fst_1.webp",
+            "assets/fst_2.webp",
+            "assets/theampersand2.webp",
+            "assets/A_Perfect_World_RyskVar_Kul_01.webp",
+            "assets/ivantan3.webp",
+            "assets/100Koll.webp",
+            "assets/Bonnier.webp",
+            "assets/gs-nyt.webp"
           ],
           "captions": [
             "Musikaliska Concert Hall / Digital & Print Campaign (Guldägg Nominee)",
             "Bonnier / Digital Identity",
-            "Bonnier / Digital Identity"
+            "Bonnier / Digital Identity",
+            "Musikaliska Concert Hall / Identity",
+            "Musikaliska Concert Hall / Digital & Print Campaign",
+            "Edsbyverken / Stockholm Furniture Fair / Poster",
+            "Föreningen Svenska Tonsättare / Identity",
+            "Föreningen Svenska Tonsättare / Identity",
+            "Föreningen Svenska Tonsättare / Identity",
+            "The Ampersand / Poster",
+            "\"Russian Spring\" / Outdoor & digital campaign",
+            "Blåsarsymfonikerna / Outdoor & digital campaign (Månadens kampanj Resumé)",
+            "E.ON / 100Koll for Teens / Digital Campaign",
+            "Bonnier / Digital family history",
+            "Gudrun Sjödén / Digital campaign for NYC store"
           ],
           "layout": "masonry"
-        }
+        },
+        [
+          "assets/brands.webp"
+        ]
       ],
       "prev": "viaplay-trailers",
       "next": null
+    },
+    "viaplay-screensavers": {
+      "title": "Viaplay — Screensaver",
+      "role": "Senior Product Designer",
+      "description": [
+        "We have seen that over 200k customers pause on their Smart TV-stream longer than 30 seconds during a day. We believed that this is a great area to show relevant title for the user. We introduced a screensaver that will launch after 30 seconds of idle time for Smart TV sessions.",
+        "We easured this by looking at completion rate, titles per user and add to my list.",
+        "Viaplay is a premium video streaming service and a leading on-demand streaming service in Europe."
+      ],
+      "images": [],
+      "video": null,
+      "prev": null,
+      "next": null,
+      "rows": [
+        [
+          "assets/screensaver-hero.001.webp"
+        ],
+        [
+          "assets/screencast+2.gif"
+        ],
+        [
+          "assets/screencast.gif"
+        ]
+      ]
     }
   }
 }

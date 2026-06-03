@@ -131,7 +131,8 @@
         <h1 class="page-title">Start Page</h1>
         <div style="display:flex;gap:8px">
           <button class="btn btn-secondary btn-sm" onclick="addHomepageItem()">+ Add Item</button>
-          <button class="btn btn-primary" onclick="saveHomepage()">Save</button>
+          <button class="btn btn-secondary" onclick="saveHomepage()">Save</button>
+          <button class="btn btn-primary" onclick="saveAndGenerateHomepage()">Save & Generate</button>
         </div>
       </div>
       <p style="color:var(--muted);font-size:13px;margin-bottom:20px;">Drag to reorder. Each item links to a case page.</p>
@@ -329,6 +330,13 @@ function removeHomepageItem(i) {
 async function saveHomepage() {
   await fetch('/api/content', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(content) });
   toast('Start page saved ✓');
+}
+
+async function saveAndGenerateHomepage() {
+  await fetch('/api/content', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(content) });
+  const res = await fetch('/api/generate-homepage', { method: 'POST' });
+  const data = await res.json();
+  if (data.ok) toast('Homepage generated ✓ — remember to push to GitHub');
 }
 
 // --- Cases ---

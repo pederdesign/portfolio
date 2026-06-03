@@ -9,7 +9,7 @@ const ROOT = __dirname;
 const CONTENT_FILE = path.join(ROOT, 'content.json');
 
 app.use(express.json());
-app.use(express.static(ROOT));
+app.use(express.static(ROOT, { extensions: ['html'] }));
 
 // Upload assets
 const storage = multer.diskStorage({
@@ -42,6 +42,91 @@ app.post('/api/upload', upload.array('files'), (req, res) => {
   res.json({ files: req.files.map(f => `assets/${f.filename}`) });
 });
 
+// --- Homepage Generator ---
+app.post('/api/generate-homepage', (req, res) => {
+  const content = JSON.parse(fs.readFileSync(CONTENT_FILE, 'utf8'));
+
+  const articles = content.homepage.map((item, i) => {
+    const isVideo = item.type === 'video' || /\.(mp4|mov|webm)$/i.test(item.asset);
+    const media = isVideo
+      ? `<video class="case-image case-video" src="${item.asset}" muted autoplay playsinline webkit-playsinline loop></video>`
+      : `<img class="case-image" src="${item.asset}" alt="${item.title}" />`;
+    return `    <article class="case" data-index="${i}">
+      <a href="cases/${item.id}.html" class="case-link">
+        <div class="case-image-wrap">
+          ${media}
+        </div>
+        <div class="case-meta">
+          <h2 class="case-title">${item.title}</h2>
+        </div>
+      </a>
+    </article>`;
+  }).join('\n\n');
+
+  const html = `<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Peder Anzén</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&family=Inter+Tight:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css?v=8" />
+  <link rel="icon" href="/logo.svg" type="image/svg+xml" />
+</head>
+<body>
+
+  <header class="site-header">
+    <a href="/" class="logo-link">
+      <img src="logo.svg" alt="Peder Anzén" class="logo" />
+    </a>
+    <nav class="site-nav">
+      <a href="/" style="text-decoration: underline; text-underline-offset: 4px;">Work</a>
+      <a href="/about.html">About</a>
+    </nav>
+  </header>
+
+  <main class="cases">
+
+${articles}
+
+  </main>
+
+  <footer class="site-footer reveal">
+    <span class="footer-name">
+      <img src="logo.svg" alt="" class="footer-logo" />
+      Peder Anzén
+    </span>
+    <a class="footer-linkedin" href="https://www.linkedin.com/in/pederanzen" target="_blank" rel="noopener" aria-label="LinkedIn">
+      <svg width="28" height="28" viewBox="0 0 64 64" fill="currentColor">
+        <rect x="20.4" y="26.6" width="5.4" height="17.4"/>
+        <circle cx="23.1" cy="21.2" r="3.1"/>
+        <path d="M29.2,26.6h5.2V29h0.1c0.7-1.4,2.5-2.8,5.1-2.8c5.5,0,6.5,3.6,6.5,8.3V44h-5.4v-8.4c0-2,0-4.6-2.8-4.6c-2.8,0-3.2,2.2-3.2,4.5V44h-5.4V26.6z"/>
+      </svg>
+    </a>
+    <a class="footer-hello" href="mailto:hey@peder.design">Say Hello!</a>
+  </footer>
+
+  <script src="main.js?v=11"></script>
+  <script>
+    let lastY = 0;
+    const header = document.querySelector('.site-header');
+    window.addEventListener('scroll', () => {
+      const y = window.scrollY;
+      const scrollingDown = y > lastY;
+      header.classList.toggle('hidden', scrollingDown && y > 80);
+      header.classList.toggle('has-bg', !scrollingDown && y > 80);
+      lastY = y;
+    }, { passive: true });
+  </script>
+</body>
+</html>`;
+
+  fs.writeFileSync(path.join(ROOT, 'index.html'), html);
+  res.json({ ok: true, file: 'index.html' });
+});
+
 // --- HTML Generator ---
 app.post('/api/generate/:id', (req, res) => {
   const content = JSON.parse(fs.readFileSync(CONTENT_FILE, 'utf8'));
@@ -70,11 +155,13 @@ app.post('/api/generate/:id', (req, res) => {
     let inner;
 
     if (layout === 'masonry') {
-      const items = files.map((src, i) => {
+      const makeItem = (src, i) => {
         const cap = captions[i];
-        return `        <div class="case-masonry-item">\n          ${mediaTag(src)}${cap ? `\n          <p class="case-caption">${cap}</p>` : ''}\n        </div>`;
-      }).join('\n');
-      inner = `<div class="case-masonry">\n${items}\n      </div>`;
+        return `          <div class="case-masonry-item">\n            ${mediaTag(src)}${cap ? `\n            <p class="case-caption">${cap}</p>` : ''}\n          </div>`;
+      };
+      const col1 = files.filter((_, i) => i % 2 === 0).map((src, j) => makeItem(src, j * 2)).join('\n');
+      const col2 = files.filter((_, i) => i % 2 === 1).map((src, j) => makeItem(src, j * 2 + 1)).join('\n');
+      inner = `<div class="case-masonry">\n        <div class="case-masonry-col">\n${col1}\n        </div>\n        <div class="case-masonry-col">\n${col2}\n        </div>\n      </div>`;
     } else if (files.length === 2) {
       const cols = files.map((src, i) => {
         const cap = captions[i];

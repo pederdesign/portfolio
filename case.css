@@ -188,13 +188,19 @@ body {
 
 /* Masonry grid */
 .case-masonry {
-  columns: 2;
-  column-gap: 24px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+  align-items: start;
+}
+
+.case-masonry-col {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
 }
 
 .case-masonry-item {
-  break-inside: avoid;
-  margin-bottom: 24px;
   display: flex;
   flex-direction: column;
   gap: 10px;
@@ -203,7 +209,7 @@ body {
 .case-masonry-item .case-img {
   width: 100%;
   height: auto;
-  object-fit: unset;
+  display: block;
 }
 
 /* Caption */
