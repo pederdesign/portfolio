@@ -393,6 +393,18 @@ function editCase(id) {
 function getRowFiles(row) { return Array.isArray(row) ? row : (row.files || []); }
 function getRowCaptions(row) { return Array.isArray(row) ? [] : (row.captions || (row.caption ? [row.caption] : [])); }
 function getRowLayout(row) { return Array.isArray(row) ? null : (row.layout || null); }
+function getRowLoop(row) { return Array.isArray(row) ? true : (row.loop !== false); }
+function setRowLoop(ri, val) {
+  var row = editorRows[ri];
+  var files = getRowFiles(row);
+  var captions = getRowCaptions(row);
+  var layout = getRowLayout(row);
+  var obj = { files };
+  if (captions.some(Boolean)) obj.captions = captions;
+  if (layout) obj.layout = layout;
+  if (!val) obj.loop = false;
+  editorRows[ri] = (Object.keys(obj).length > 1 || !val) ? obj : files;
+}
 function setRowCaption(ri, ci, val) {
   const row = editorRows[ri];
   const files = getRowFiles(row);
@@ -438,6 +450,8 @@ function renderEditorRows() {
     const canPair = !isMasonry && files.length === 1 && ri < editorRows.length - 1 && getRowFiles(editorRows[ri + 1]).length === 1;
     const canMasonry = !isMasonry && files.length === 1 && ri < editorRows.length - 1 && getRowFiles(editorRows[ri + 1]).length === 1;
     const captions = getRowCaptions(row);
+    const hasVideo = files.some(f => /\.(mp4|mov|webm)$/i.test(f));
+    const loopVal = getRowLoop(row);
 
     // Handle drag
     var handle = document.createElement('span');
@@ -523,6 +537,17 @@ function renderEditorRows() {
       }
     }
 
+    if (hasVideo) {
+      var loopLabel = document.createElement('label');
+      loopLabel.style.cssText = 'display:flex;align-items:center;gap:4px;font-size:12px;color:var(--muted);cursor:pointer;';
+      var loopCheck = document.createElement('input');
+      loopCheck.type = 'checkbox';
+      loopCheck.checked = loopVal;
+      loopCheck.addEventListener('change', (function(r) { return function() { setRowLoop(r, this.checked); }; })(ri));
+      loopLabel.appendChild(loopCheck);
+      loopLabel.appendChild(document.createTextNode('Loop'));
+      actions.appendChild(loopLabel);
+    }
     var rb = document.createElement('button');
     rb.className = 'btn btn-danger btn-sm';
     rb.textContent = '✕';

@@ -149,34 +149,34 @@ app.post('/api/generate/:id', (req, res) => {
   const nextCase = nextId ? content.cases[nextId] : null;
 
   const isVideo = src => /\.(mp4|mov|webm)$/i.test(src);
-  const mediaTag = src => isVideo(src)
-    ? `<video class="case-img case-video" src="../${src}" muted autoplay playsinline webkit-playsinline loop></video>`
+  const mediaTag = (src, loop = true) => isVideo(src)
+    ? `<video class="case-img case-video" src="../${src}" muted autoplay playsinline webkit-playsinline${loop ? ' loop' : ''}></video>`
     : `<img class="case-img" src="../${src}" alt="" />`;
 
   const rows = (c.rows || []).map(row => {
     const files = Array.isArray(row) ? row : (row.files || []);
     const captions = Array.isArray(row) ? [] : (row.captions || (row.caption ? [row.caption] : []));
     const layout = Array.isArray(row) ? null : (row.layout || null);
+    const loop = Array.isArray(row) ? true : (row.loop !== false);
 
     let inner;
 
     if (layout === 'masonry') {
       const makeItem = (src, i) => {
         const cap = captions[i];
-        return `          <div class="case-masonry-item">\n            ${mediaTag(src)}${cap ? `\n            <p class="case-caption">${cap}</p>` : ''}\n          </div>`;
+        return `          <div class="case-masonry-item">\n            ${mediaTag(src, loop)}${cap ? `\n            <p class="case-caption">${cap}</p>` : ''}\n          </div>`;
       };
       const col1 = files.filter((_, i) => i % 2 === 0).map((src, j) => makeItem(src, j * 2)).join('\n');
       const col2 = files.filter((_, i) => i % 2 === 1).map((src, j) => makeItem(src, j * 2 + 1)).join('\n');
       inner = `<div class="case-masonry">\n        <div class="case-masonry-col">\n${col1}\n        </div>\n        <div class="case-masonry-col">\n${col2}\n        </div>\n      </div>`;
     } else if (files.length === 2) {
-      // Images first (share equal height in grid row 1), captions below (grid row 2)
-      const imgs = files.map(src => `        ${mediaTag(src)}`).join('\n');
+      const imgs = files.map(src => `        ${mediaTag(src, loop)}`).join('\n');
       const caps = files.map((_, i) => `        <p class="case-caption">${captions[i] || ''}</p>`).join('\n');
       const hasCaptions = captions.some(Boolean);
       inner = `<div class="case-img-row">\n${imgs}${hasCaptions ? '\n' + caps : ''}\n      </div>`;
     } else {
       const cap = captions[0];
-      inner = mediaTag(files[0]) + (cap ? `\n        <p class="case-caption">${cap}</p>` : '');
+      inner = mediaTag(files[0], loop) + (cap ? `\n        <p class="case-caption">${cap}</p>` : '');
     }
 
     return `      <div class="case-media-block reveal">\n        ${inner}\n      </div>`;

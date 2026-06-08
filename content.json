@@ -113,11 +113,14 @@
           "assets/customer+portal.png.webp"
         ],
         [
-          "assets/map.png.webp"
+          "assets/map.png"
         ],
-        [
-          "assets/Planning+tool.png.webp"
-        ],
+        {
+          "files": [
+            "assets/Comp 1_5.mp4"
+          ],
+          "loop": false
+        },
         [
           "assets/Aira.webp"
         ],
